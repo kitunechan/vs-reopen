@@ -8,7 +8,9 @@ namespace VSDocumentReopen.Infrastructure.Logging.Logentries
 {
 	public sealed class LogentriesSerilogLogger : ILogger
 	{
-		private Logger _log = new LoggerConfiguration()
+
+		public LogentriesSerilogLogger() {
+			_log = new LoggerConfiguration()
 			.MinimumLevel.Information()
 			.Enrich.FromLogContext()
 			.Enrich.WithMachineName()
@@ -17,8 +19,11 @@ namespace VSDocumentReopen.Infrastructure.Logging.Logentries
 			.Enrich.With<VisualStudioVersionEnricher>()
 			.Enrich.With<ExtensionVersionEnricher>()
 			.Enrich.With<MemoryInfoEnricher>()
-			.WriteTo.Logentries("", new JsonFormatter(renderMessage: true))
+			.WriteTo.Logentries("token", new JsonFormatter(renderMessage: true))
 			.CreateLogger();
+		}
+
+		private Logger _log;
 
 		public void Trace(string message)
 		{
